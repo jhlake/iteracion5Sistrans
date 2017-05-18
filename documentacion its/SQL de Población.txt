@@ -1,0 +1,25 @@
+INSERT INTO USUARIOS(identificacion, nombre, email, festivalid, ROL) SELECT rownum, 'usuario'||rownum, 'usuario'||rownum||'@loremipsum.com', 1, trunc(dbms_random.value(1,5)) FROM dual CONNECT BY rownum <= 1000000;
+
+INSERT INTO Espectaculos(id, nombre, fecha_ini, fecha_fin, duracion, descripcion, escenario, idfestival) SELECT (rownum), 'espectaculo'||rownum, '01/01/2010', '31/01/2011', 375, 'lorem ipsum', trunc(dbms_random.value(1,12)), 1 FROM dual connect by rownum <= 100000;
+
+INSERT INTO Espectaculos(id, nombre, fecha_ini, fecha_fin, duracion, descripcion, escenario, idfestival) SELECT (rownum+100000), 'espectaculo'||rownum||rownum, '01/01/2011', '31/01/2012', 375, 'lorem ipsum', trunc(dbms_random.value(1,12)), 1 FROM dual connect by rownum <= 100000;
+
+INSERT INTO Espectaculos(id, nombre, fecha_ini, fecha_fin, duracion, descripcion, escenario, idfestival) SELECT (rownum+200000), 'espectaculo'||rownum||rownum||rownum, '01/01/2012', '31/01/2013', 375, 'lorem ipsum', trunc(dbms_random.value(1,12)), 1 FROM dual connect by rownum <= 100000;
+
+INSERT INTO Espectaculos(id, nombre, fecha_ini, fecha_fin, duracion, descripcion, escenario, idfestival) SELECT (rownum+300000), 'espectaculo'||rownum||rownum||rownum||rownum, '01/01/2013', '31/01/2017', 375, 'lorem ipsum', trunc(dbms_random.value(1,12)), 1 FROM dual connect by rownum <= 700000;
+
+INSERT INTO SITIOS(ID, NOMBRE, CAPACIDAD, APTODISCAPACIDADES, HORARIO) SELECT rownum, 'Sitio'||rownum, trunc(dbms_random.value(101,300)), 1, 'Lorem Ipsum' FROM dual CONNECT BY rownum <= 200;
+
+INSERT INTO FUNCIONES(ID, IDSITIO, IDESPECTACULO, FECHAFUNCION, REALIZADO) SELECT rownum, trunc(dbms_random.value(1,201)), trunc(dbms_random.value(1,100000)), trunc(dbms_random.value(1,28))||'/'||trunc(dbms_random.value(1,13))||'/'||trunc(dbms_random.value(2010,2017)), 1 FROM dual connect by rownum <= 1000000;
+
+INSERT INTO LOCALIDADES(ID, NOMBRE, CAPACIDAD, DESCRIPCION, PRECIO, ESNUMERADA, PERTENECEA) SELECT rownum, 'localidad'||rownum, trunc(dbms_random.value(1000,5001)),'Lorem Ipsum', trunc(dbms_random.value(10,51)), 1, trunc(dbms_random.value(1, 1000001)) FROM dual CONNECT BY rownum <= 3000000;
+
+INSERT INTO BOLETAS(ID, NUMFILASILLA, NUMCOLUMNASILLA, IDLOCALIDAD, IDCLIENTE) SELECT rownum, trunc(dbms_random.value(1, 8)), trunc(dbms_random.value(1,46)), trunc(dbms_random.value(1,3000001)), trunc(dbms_random.value(1,1000001)) from dual connect by rownum <= 1000000;
+
+INSERT INTO ABONAMIENTOS(IDABONO, FECHA) SELECT rownum, trunc(dbms_random.value(1,28))||'/'||trunc(dbms_random.value(1,13))||'/'||trunc(dbms_random.value(2010,2017)) from dual connect by rownum <= 600000;
+
+INSERT INTO ABONAABOLETAS(IDABONACIONES, IDBOLETA, IDABONO) SELECT rownum, rownum, trunc(dbms_random.value(1,600001)) from dual connect by rownum <= 500000;
+
+INSERT INTO COMPANIASTEATRO SELECT rownum, 'compania'||rownum, 'representante'||rownum, 'Lorem Ipsum', rownum||'.com', trunc(dbms_random.value(1,28))||'/'||trunc(dbms_random.value(1,13))||'/'||trunc(dbms_random.value(2010,2013)), trunc(dbms_random.value(1,28))||'/'||trunc(dbms_random.value(1,13))||'/'||trunc(dbms_random.value(2014,2017)), 1 from dual connect by rownum <=25;
+
+INSERT INTO COMPANIACOOPERA SELECT (rownum+X), X, (rownum+X) from dual connect by rownum <= 10; (Iba alternando los X)

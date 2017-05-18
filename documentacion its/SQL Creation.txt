@@ -1,0 +1,161 @@
+CREATE TABLE Festivales(
+id int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+fecha_ini date NOT NULL,
+fecha_fin date NOT NULL,
+ciudad varchar(16)
+);
+
+CREATE TABLE roles(
+codRol int NOT NULL PRIMARY KEY,
+descripcion varchar(32) NOT NULL
+);
+
+CREATE TABLE Usuarios(
+identificacion int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+email varchar(32) NOT NULL,
+festivalID int,
+rol int,
+CONSTRAINT FK_UsuarioRol FOREIGN KEY (rol) 
+REFERENCES Roles(codRol),
+CONSTRAINT FK_UsuarioFestival  FOREIGN KEY (festivalID)
+REFERENCES Festivales(id)
+);
+
+CREATE TABLE Generos(
+id int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+descripcion varchar(128)
+);
+
+CREATE TABLE Sitios(
+id int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+capacidad int NOT NULL,
+aptoDiscapacidades int,
+horario varchar(32)
+);
+
+CREATE TABLE Abonamientos(
+idAbono int NOT NULL PRIMARY KEY,
+fecha date NOT NULL
+);
+
+CREATE TABLE Espectaculos(
+id int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+fecha_ini date NOT NULL,
+fecha_fin date NOT NULL,
+duracion long NOT NULL,
+descripcion varchar(256),
+escenario int,
+idFestival int NOT NULL,
+CONSTRAINT FK_fest FOREIGN KEY (idFestival)
+REFERENCES Festivales(id)
+);
+
+CREATE TABLE CompaniasTeatro(
+id int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+nombreRepresentante varchar(32) NOT NULL,
+pais varchar(32) NOT NULL,
+urlWeb varchar(32) NOT NULL,
+fechaLlegada date NOT NULL,
+fechaSalida date NOT NULL,
+idFestival int NOT NULL,
+CONSTRAINT FK_FestivComp FOREIGN KEY (idFestival)
+REFERENCES Festivales(id)
+);
+
+CREATE TABLE CompaniaCoopera(
+idCooperacion int NOT NULL PRIMARY KEY,
+idCompania int NOT NULL,
+idEspectaculo int NOT NULL,
+CONSTRAINT FK_Espectaculo FOREIGN KEY (idEspectaculo)
+REFERENCES Espectaculos(id),
+CONSTRAINT FK_Comp FOREIGN KEY (idCompania)
+REFERENCES CompaniasTeatro(id)
+);
+
+CREATE TABLE Funciones(
+id int NOT NULL PRIMARY KEY,
+idSitio int NOT NULL,
+idEspectaculo int NOT NULL,
+fechaFuncion date NOT NULL,
+realizado int NOT NULL,
+CONSTRAINT FK_Sitio FOREIGN KEY (idSitio)
+REFERENCES Sitios(id),
+CONSTRAINT FK_Espectaculos FOREIGN KEY (idEspectaculo)
+REFERENCES Espectaculos(id)
+);
+
+CREATE TABLE Localidades(
+id int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+capacidad int NOT NULL,
+descripcion varchar(128),
+precio number,
+esNumerada int,
+perteneceA int NOT NULL,
+CONSTRAINT FK_funcLoc FOREIGN KEY (perteneceA) 
+REFERENCES Funciones(id)
+);
+
+CREATE TABLE Boletas(
+id int NOT NULL PRIMARY KEY,
+numFilaSilla int NOT NULL,
+numColumnaSilla int NOT NULL,
+idLocalidad int NOT NULL,
+idCliente int,
+CONSTRAINT FK_Cliente FOREIGN KEY (idCliente)
+REFERENCES Usuarios(identificacion),
+CONSTRAINT FK_Localidad FOREIGN KEY (idLocalidad)
+REFERENCES Localidades(id)
+);
+
+CREATE TABLE AbonaABoletas(
+idAbonaciones int NOT NULL PRIMARY KEY,
+idBoleta int NOT NULL, 
+idAbono int NOT NULL,
+CONSTRAINT FK_bol FOREIGN KEY (idBoleta)
+REFERENCES Boletas(id),
+CONSTRAINT FK_abon FOREIGN KEY (idAbono)
+REFERENCES Abonamientos(idAbono)
+);
+
+CREATE TABLE EspectaculoEs(
+idPref int NOT NULL PRIMARY KEY,
+idEspectaculo int NOT NULL,
+idGenero int NOT NULL,
+CONSTRAINT FK_EspectaculoGenero FOREIGN KEY (idGenero)
+REFERENCES Generos(id),
+CONSTRAINT FK_EspectaculoDetail FOREIGN KEY (idEspectaculo)
+REFERENCES Espectaculos(id)
+);
+
+CREATE TABLE RequerimientosTecnicos(
+id int NOT NULL PRIMARY KEY,
+nombre varchar(32) NOT NULL,
+descripcion varchar(32)
+);
+
+CREATE TABLE EspectaculoDemanda(
+idDemanda int NOT NULL PRIMARY KEY,
+idEspectaculo int NOT NULL,
+idReq int NOT NULL,
+CONSTRAINT FK_EspectaculoD FOREIGN KEY (idEspectaculo)
+REFERENCES Espectaculos(id),
+CONSTRAINT FK_ReqDem FOREIGN KEY (idReq)
+REFERENCES RequerimientosTecnicos(id)
+);
+
+CREATE TABLE SitioOfrece(
+idOferta int NOT NULL PRIMARY KEY,
+idSitio int NOT NULL,
+idReq int NOT NULL,
+CONSTRAINT FK_SitioOf FOREIGN KEY(idSitio)
+REFERENCES Sitios(id),
+CONSTRAINT FK_reqoffer FOREIGN KEY (idReq)
+REFERENCES RequerimientosTecnicos(id)
+);
