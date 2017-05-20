@@ -25,8 +25,7 @@ import dtm.JMSManager;
 import tm.FestivAndesMaster;
 
 /**
- * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/VideoAndes/rest/admin/...
- * @author Juan
+ * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/Iteracion5Sisttans/rest/admin/...
  */
 @Path("admin")
 public class AdminServices {
@@ -89,10 +88,21 @@ public class AdminServices {
 			prop.load(in);
 			in.close();
 			String myQueue = prop.getProperty("myQueue");
-			String topicAllRentabilidad = prop.getProperty("topicAllRentabilidad");
+			String topicAllRentabilidad = prop.getProperty("topicAllRentabilidad");	
+			String topicAllRentabilidad2 = prop.getProperty("topicAllRentabilidad2");
+			String topicAllFunciones = prop.getProperty("topicAllFunciones");
+			String topicAllAbonamientos = prop.getProperty("topicAllAbonamientos");
+			String topicAllRetirarCompania = prop.getProperty("topicAllRetirarCompania");
+			
 			int numberApps = Integer.parseInt(prop.getProperty("numberApps"));
 			
-			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad);
+			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad);	
+			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad2);
+			manager.setUpJMSManager(numberApps, myQueue, topicAllFunciones);
+			manager.setUpJMSManager(numberApps, myQueue, topicAllAbonamientos);
+			manager.setUpJMSManager(numberApps, myQueue, topicAllRetirarCompania);	
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

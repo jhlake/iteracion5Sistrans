@@ -25,7 +25,10 @@ import com.rabbitmq.jms.admin.RMQConnectionFactory;
 import com.rabbitmq.jms.admin.RMQDestination;
 
 import jms.AllAbonamientosMDB;
+import jms.AllFuncionesMDB;
+import jms.AllRentabilidad2MDB;
 import jms.AllRentabilidadMDB;
+import jms.AllRetirarCompaniaMDB;
 import jms.NonReplyException;
 import tm.FestivAndesMaster;
 import vos.CompaniaDeTeatro;
@@ -52,6 +55,14 @@ public class FestivAndesDistributed
 	
 	private AllRentabilidadMDB allRentabilidadMQ;
 	
+	private AllRentabilidad2MDB allRentabilidad2MQ;
+	
+	private AllFuncionesMDB allFuncionesMQ;
+	
+	private AllAbonamientosMDB allAbonamientosMQ;
+	
+	private AllRetirarCompaniaMDB allRetirarCompaniaMQ;
+	
 	private static String path;
 
 
@@ -60,14 +71,26 @@ public class FestivAndesDistributed
 		InitialContext ctx = new InitialContext();
 		factory = (RMQConnectionFactory) ctx.lookup(MQ_CONNECTION_NAME);
 		allRentabilidadMQ = new AllRentabilidadMDB(factory, ctx);
+		allRentabilidad2MQ = new AllRentabilidad2MDB(factory, ctx);
+		allFuncionesMQ = new AllFuncionesMDB(factory, ctx);
+		allAbonamientosMQ = new AllAbonamientosMDB(factory, ctx);
+		allRetirarCompaniaMQ = new AllRetirarCompaniaMDB(factory, ctx);
 		
 		allRentabilidadMQ.start();
+		allRentabilidad2MQ.start();
+		allFuncionesMQ.start();
+		allAbonamientosMQ.start();
+		allRetirarCompaniaMQ.start();
 		
 	}
 	
 	public void stop() throws JMSException
 	{
 		allRentabilidadMQ.close();
+		allRentabilidad2MQ.close();
+		allFuncionesMQ.close();
+		allAbonamientosMQ.close();
+		allRetirarCompaniaMQ.close();
 	}
 	
 	/**
@@ -120,7 +143,7 @@ public class FestivAndesDistributed
 		return getInstance(tm);
 	}
 	
-	/*
+	/**
 	public ListaVideos getLocalVideos() throws Exception
 	{
 		return tm.darVideosLocal();
