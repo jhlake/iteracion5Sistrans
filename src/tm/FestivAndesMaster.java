@@ -10,35 +10,50 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.DAOBoletas;
+import dao.DAOCompaniasDeTeatro;
 import dao.DAOEspectaculos;
 import dao.DAOFunciones;
 import dao.DAOLocalidades;
 import dao.DAOPreferenciasClientes;
 import dao.DAOSitios;
 import dao.DAOUsuarios;
+import dtm.FestivAndesDistributed;
+import vos.Abonamiento;
 import vos.Boleta;
 import vos.Categoria;
+import vos.CompaniaDeTeatro;
 import vos.Espectaculo;
 import vos.EspectaculoConsulta;
+import vos.Funcion;
+import vos.ListaAbonamientos;
+import vos.ListaCompanias;
+import vos.ListaFunciones;
+import vos.ListaReporteRentabilidad2C5;
+import vos.ListaReporteRentabilidadC5;
 import vos.PublicoObjetivo;
 import vos.ReporteEspectaculo;
 import vos.ReporteFuncion;
 import vos.ReporteFuncionC2;
 import vos.ReporteFuncionC4;
 import vos.ReporteLocalidadC2;
+import vos.ReporteRentabilidad2C5;
+import vos.ReporteRentabilidadC5;
 import vos.ReporteSitioC2;
 import vos.Sitio;
 
 public class FestivAndesMaster {
 	
-	public static final String ESQUEMA = "ISIS2304B161710";
+
+	public static final String ESQUEMA = "ISIS2304B021710";
+	
 	/**
-	 * Atributo estÃ¡tico que contiene el path relativo del archivo que tiene los datos de la conexiÃ³n
+	 * Atributo estático que contiene el path relativo del archivo que tiene los datos de la conexión
 	 */
-	private static final String CONNECTION_DATA_FILE_NAME_REMOTE = "/conexion.properties";
+	public static final String CONNECTION_DATA_FILE_NAME_REMOTE = "/conexion.properties";
+	
 
 	/**
-	 * Atributo estÃ¡tico que contiene el path absoluto del archivo que tiene los datos de la conexiÃ³n
+	 * Atributo estático que contiene el path absoluto del archivo que tiene los datos de la conexión
 	 */
 	private  String connectionDataPath;
 
@@ -63,15 +78,32 @@ public class FestivAndesMaster {
 	private String driver;
 	
 	/**
-	 * ConexiÃ³n a la base de datos
+	 * Conexión a la base de datos
 	 */
 	private Connection conn;
 	
+	private FestivAndesDistributed dtm;
+
+
+	/**
+	 * Método constructor de la clase VideoAndesMaster, esta clase modela y contiene cada una de las 
+	 * transacciones y la logia de negocios que estas conllevan.
+	 * <b>post: </b> Se crea el objeto VideoAndesMaster, se inicializa el path absoluto de el archivo de conexión y se
+	 * inicializa los atributos que se usan par la conexión a la base de datos.
+	 * @param contextPathP - path absoluto en el servidor del contexto del deploy actual
+	 */
 	public FestivAndesMaster(String contextPathP) {
 		connectionDataPath = contextPathP + CONNECTION_DATA_FILE_NAME_REMOTE;
 		initConnectionData();
+		System.out.println("Instancing DTM...");
+		dtm = FestivAndesDistributed.getInstance(this);
+		System.out.println("Done!");
 	}
-	
+
+	/*
+	 * Método que  inicializa los atributos que se usan para la conexion a la base de datos.
+	 * <b>post: </b> Se han inicializado los atributos que se usan par la conexión a la base de datos.
+	 */
 	private void initConnectionData() {
 		try {
 			File arch = new File(this.connectionDataPath);
@@ -88,7 +120,12 @@ public class FestivAndesMaster {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Método que  retorna la conexión a la base de datos
+	 * @return Connection - la conexión a la base de datos
+	 * @throws SQLException - Cualquier error que se genere durante la conexión a la base de datos
+	 */
 	private Connection darConexion() throws SQLException {
 		System.out.println("Connecting to: " + url + " With user: " + user);
 		return DriverManager.getConnection(url, user, password);
@@ -632,4 +669,201 @@ public class FestivAndesMaster {
 		}
 	}
 	*/
+	
+	
+	public ListaFunciones darVideosLocal() throws Exception {
+		ArrayList<Funcion> videos;
+		DAOFunciones daoVideos = new DAOFunciones();
+		try 
+		{
+			//////Transacción
+			this.conn = darConexion();
+			daoVideos.setConn(conn);
+			videos = daoVideos.darFunciones();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoVideos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return new ListaFunciones(videos);
+	}
+
+	public ListaReporteRentabilidadC5 darRentabilidadesLocal() throws SQLException {
+		ArrayList<ReporteRentabilidadC5> rents;
+		DAOSitios dao = new DAOSitios();
+		try 
+		{
+			//////Transacción
+			this.conn = darConexion();
+			dao.setConn(conn);
+			rents = dao.darRentabilidades();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return new ListaReporteRentabilidadC5(rents);
+	}
+	
+	public ListaReporteRentabilidad2C5 darRentabilidades2Local() throws SQLException {
+		ArrayList<ReporteRentabilidad2C5> rents;
+		DAOEspectaculos dao = new DAOEspectaculos();
+		try 
+		{
+			//////Transacción
+			this.conn = darConexion();
+			dao.setConn(conn);
+			rents = dao.darRentabilidades();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return new ListaReporteRentabilidad2C5(rents);
+	}
+
+	public ListaCompanias retirarCompaniasLocal() throws SQLException, Exception {
+		ArrayList<CompaniaDeTeatro> com;
+		DAOCompaniasDeTeatro dao = new DAOCompaniasDeTeatro();
+		try 
+		{
+			//////Transacción
+			this.conn = darConexion();
+			dao.setConn(conn);
+			com = dao.eliminarCompania();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return new ListaCompanias(com);
+	}
+
+	public ListaFunciones darFuncionesLocal() throws SQLException, Exception {
+	
+		ArrayList<Funcion> fun;
+		DAOFunciones dao = new DAOFunciones();
+		try 
+		{
+			//////Transacción
+			this.conn = darConexion();
+			dao.setConn(conn);
+			fun = dao.darFunciones();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return new ListaFunciones(fun);
+	}
+
+	public ListaAbonamientos darAbonamientosLocal() throws SQLException, Exception {
+		ArrayList<Abonamiento> abo;
+		DAOUsuarios dao = new DAOUsuarios();
+		try 
+		{
+			//////Transacción
+			this.conn = darConexion();
+			dao.setConn(conn);
+			abo = dao.darAbonamientos();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return new ListaAbonamientos(abo);
+	}
+	
+
+	
 }

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import tm.FestivAndesMaster;
+import vos.ReporteRentabilidadC5;
 import vos.Sitio;
 
 public class DAOSitios {
@@ -88,6 +89,11 @@ public class DAOSitios {
 				rs.getString("HORARIO"),
 				rs.getString("TIPO_SILLETERIA"),
 				rs.getString("PROTECCION_CLIMA").equalsIgnoreCase("S"));
+	}
+
+	public ArrayList<ReporteRentabilidadC5> darRentabilidades() {
+		//TODO hacer consulta sql
+		return null;
 	}
 	
 	

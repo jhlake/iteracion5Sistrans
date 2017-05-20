@@ -9,6 +9,8 @@ import java.util.List;
 
 import tm.FestivAndesMaster;
 import vos.Espectaculo;
+import vos.ReporteRentabilidad2C5;
+import vos.ReporteRentabilidadC5;
 
 public class DAOEspectaculos{
 	
@@ -104,6 +106,11 @@ public class DAOEspectaculos{
 			espectaculos.add(espectaculo);
 		}
 		return espectaculos;
+	}
+
+	public ArrayList<ReporteRentabilidad2C5> darRentabilidades() {
+		// TODO Hacer consulta sql
+		return null;
 	}
 	
 	

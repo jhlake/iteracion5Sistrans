@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import tm.FestivAndesMaster;
+import vos.Abonamiento;
 import vos.Usuario;
 
 public class DAOUsuarios{
@@ -70,5 +71,10 @@ public class DAOUsuarios{
 		int cant = rs.getInt("CANTIDAD");
 
 		return cant == 1;
+	}
+
+	public ArrayList<Abonamiento> darAbonamientos() {
+		// TODO Crear sentencia SQL	
+		return null;
 	}
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tm.FestivAndesMaster;
+import vos.Funcion;
 
 public class DAOFunciones {
 	
@@ -19,17 +20,17 @@ public class DAOFunciones {
 	private static final String SITIO = "SITIO";
 	
 	/**
-	 * Arraylits de recursos que se usan para la ejecuci√≥n de sentencias SQL
+	 * Arraylits de recursos que se usan para la ejecuciÛn de sentencias SQL
 	 */
 	private ArrayList<Object> recursos;
 
 	/**
-	 * Atributo que genera la conexi√≥n a la base de datos
+	 * Atributo que genera la conexiÛn a la base de datos
 	 */
 	private Connection conn;
 
 	/**
-	 * M√©todo constructor que crea DAOVideo
+	 * MÈtodo constructor que crea DAOVideo
 	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
 	 */
 	public DAOFunciones() {
@@ -37,7 +38,7 @@ public class DAOFunciones {
 	}
 
 	/**
-	 * M√©todo que cierra todos los recursos que estan enel arreglo de recursos
+	 * MÈtodo que cierra todos los recursos que estan enel arreglo de recursos
 	 * <b>post: </b> Todos los recurso del arreglo de recursos han sido cerrados
 	 */
 	public void cerrarRecursos() {
@@ -52,7 +53,7 @@ public class DAOFunciones {
 	}
 
 	/**
-	 * M√©todo que inicializa la connection del DAO a la base de datos con la conexi√≥n que entra como par√°metro.
+	 * MÈtodo que inicializa la connection del DAO a la base de datos con la conexiÛn que entra como par·metro.
 	 * @param con  - connection a la base de datos
 	 */
 	public void setConn(Connection con){
@@ -141,7 +142,28 @@ public class DAOFunciones {
 		return lista;
 	}
 	
-	
+	public ArrayList<Funcion> darFunciones() throws SQLException, Exception {
+		ArrayList<Funcion> videos = new ArrayList<Funcion>();
+
+		String sql = "SELECT * FROM ESQUEMA.FUNCIONES";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String fecha = rs.getString("fechaFuncion");
+			int id = Integer.parseInt(rs.getString("id"));
+			int realizado = Integer.parseInt(rs.getString("realizada"));
+			boolean realizada = false;
+			if(realizado==1){
+				realizada = true;
+			}
+			
+			videos.add(new Funcion(id, fecha, realizada));
+		}
+		return videos;
+	}
 	
 	
 	

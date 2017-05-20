@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.CompaniaDeTeatro;
+import vos.ListaCompanias;
 
 public class DAOCompaniasDeTeatro {
 
@@ -38,12 +39,18 @@ public class DAOCompaniasDeTeatro {
 		sql += compania.getNombre() + "','";
 		sql += compania.getRepresentante() + "','";
 		sql += compania.getPaisOrigen() + "','";
-		sql += compania.getPaginaWeb() + "')";
+		sql += compania.getUrlWeb() + "')";
 
 		System.out.println("SQL stmt:" + sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+
+	public ArrayList<CompaniaDeTeatro> eliminarCompania() throws SQLException, Exception {
+
+		//TODO hacer consulta sql
+				return null;
 	}
 }
