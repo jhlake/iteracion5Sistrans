@@ -150,7 +150,7 @@ public class AllRentabilidadMDB implements MessageListener, ExceptionListener
 				if(ex.getStatus().equals(REQUEST))
 				{
 					FestivAndesDistributed dtm = FestivAndesDistributed.getInstance();
-					ListaReporteRentabilidadC5 videos = dtm.getLocalRentabilidades();
+					ReporteRentabilidadC5 videos = dtm.getLocalRentabilidades(1);
 					String payload = mapper.writeValueAsString(videos);
 					Topic t = new RMQDestination("", "festival.test", ex.getRoutingKey(), "", false);
 					sendMessage(payload, REQUEST_ANSWER, t, id);

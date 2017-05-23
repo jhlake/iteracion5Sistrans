@@ -25,7 +25,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dtm.JMSManager;
+import dtm.FestivAndesDistributed;
 import tm.FestivAndesMaster;
 import vos.Usuario;
 
@@ -69,7 +69,7 @@ public class UsuariosServices {
 	@Path("/jmsInit")
 	public Response initApp() {
 		try {
-			JMSManager manager = JMSManager.darInstacia(new FestivAndesMaster(getPath()));
+			FestivAndesDistributed manager = FestivAndesDistributed.getInstance(new FestivAndesMaster(getPath()));
 			initDataFromFile(manager);
 			System.out.println("InitApp1");
 		} catch (Exception e) {
@@ -82,7 +82,7 @@ public class UsuariosServices {
 	 * Método que inicializa los atributos basicos de JMSManager
 	 * 
 	 */
-	public void initDataFromFile(JMSManager manager) {
+	public void initDataFromFile(FestivAndesDistributed manager) {
 		try {
 			String contextPathP = context.getRealPath("WEB-INF/ConnectionData");
 			String connectionDataPath = contextPathP + FestivAndesMaster.CONNECTION_DATA_FILE_NAME_REMOTE;

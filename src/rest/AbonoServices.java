@@ -26,9 +26,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import dtm.JMSManager;
+import dtm.FestivAndesDistributed;
 import tm.FestivAndesMaster;
 import vos.Abonamiento;
+import vos.ListaAbonamientos;
 
 /**
  * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/Iteracion5Sisttans/rest/admin/...
@@ -70,7 +71,7 @@ public class AbonoServices {
 	@Path("/jmsInit")
 	public Response initApp() {
 		try {
-			JMSManager manager = JMSManager.darInstacia(new FestivAndesMaster(getPath()));
+			FestivAndesDistributed manager = FestivAndesDistributed.getInstance(new FestivAndesMaster(getPath()));
 			initDataFromFile(manager);
 			System.out.println("InitApp1");
 		} catch (Exception e) {
@@ -83,7 +84,7 @@ public class AbonoServices {
 	 * Método que inicializa los atributos basicos de JMSManager
 	 * 
 	 */
-	public void initDataFromFile(JMSManager manager) {
+	public void initDataFromFile(FestivAndesDistributed manager) {
 		try {
 			String contextPathP = context.getRealPath("WEB-INF/ConnectionData");
 			String connectionDataPath = contextPathP + FestivAndesMaster.CONNECTION_DATA_FILE_NAME_REMOTE;
@@ -114,22 +115,39 @@ public class AbonoServices {
 		}
 	}
 	
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response darAbonamientos(){
+		FestivAndesMaster tm = new FestivAndesMaster(getPath());
+		ListaAbonamientos reporte;
+		try {
+			reporte = tm.darAbonamientosLocal();
+					} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(reporte).build();
+	}
+
+	
+	
 	//TODO pruebas
 		@GET
 		@Path("comprar")
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response comprarAbonamiento(@QueryParam("idEspectador") int idEspectador,
-				@QueryParam("idFuncion") int idFuncion, @QueryParam("idLocalidad") int idLocalidad){
+				@QueryParam("idFuncion") int idFuncion, @QueryParam("idLocalidad") int idLocalidad,
+				@QueryParam("idSitio") int idSitio){
 			FestivAndesMaster tm = new FestivAndesMaster(getPath());
 			Abonamiento reporte;
 			try {
-				reporte = tm.registrarCompraAbonamiento(idEspectador, idFuncion, idLocalidad);
+				reporte = tm.registrarCompraAbonamiento(idEspectador, idFuncion, idLocalidad, idSitio);
 			} catch (Exception e) {
 				return Response.status(500).entity(doErrorMessage(e)).build();
 			}
 			return Response.status(200).entity(reporte).build();
 		}
-	
+			
 	
 
 }

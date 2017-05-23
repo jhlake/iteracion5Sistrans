@@ -21,7 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import dtm.JMSManager;
+import dtm.FestivAndesDistributed;
 import tm.FestivAndesMaster;
 
 /**
@@ -64,7 +64,7 @@ public class AdminServices {
 	@Path("/jmsInit")
 	public Response initApp() {
 		try {
-			JMSManager manager = JMSManager.darInstacia(new FestivAndesMaster(getPath()));
+			FestivAndesDistributed manager = FestivAndesDistributed.getInstance(new FestivAndesMaster(getPath()));
 			initDataFromFile(manager);
 			System.out.println("InitApp1");
 		} catch (Exception e) {
@@ -77,7 +77,7 @@ public class AdminServices {
 	 * Método que inicializa los atributos basicos de JMSManager
 	 * 
 	 */
-	public void initDataFromFile(JMSManager manager) {
+	public void initDataFromFile(FestivAndesDistributed manager) {
 		try {
 			String contextPathP = context.getRealPath("WEB-INF/ConnectionData");
 			String connectionDataPath = contextPathP + FestivAndesMaster.CONNECTION_DATA_FILE_NAME_REMOTE;
@@ -89,18 +89,12 @@ public class AdminServices {
 			in.close();
 			String myQueue = prop.getProperty("myQueue");
 			String topicAllRentabilidad = prop.getProperty("topicAllRentabilidad");	
-			String topicAllRentabilidad2 = prop.getProperty("topicAllRentabilidad2");
-			String topicAllFunciones = prop.getProperty("topicAllFunciones");
-			String topicAllAbonamientos = prop.getProperty("topicAllAbonamientos");
-			String topicAllRetirarCompania = prop.getProperty("topicAllRetirarCompania");
+			
 			
 			int numberApps = Integer.parseInt(prop.getProperty("numberApps"));
 			
 			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad);	
-			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad2);
-			manager.setUpJMSManager(numberApps, myQueue, topicAllFunciones);
-			manager.setUpJMSManager(numberApps, myQueue, topicAllAbonamientos);
-			manager.setUpJMSManager(numberApps, myQueue, topicAllRetirarCompania);	
+				
 			
 			
 		} catch (Exception e) {

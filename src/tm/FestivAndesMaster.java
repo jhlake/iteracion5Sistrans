@@ -705,15 +705,15 @@ public class FestivAndesMaster {
 		return new ListaFunciones(videos);
 	}
 
-	public ListaReporteRentabilidadC5 darRentabilidadesLocal() throws SQLException {
-		ArrayList<ReporteRentabilidadC5> rents;
+	public ReporteRentabilidadC5 darRentabilidadesLocal(int idSitio) throws Exception {
+		ReporteRentabilidadC5 rents;
 		DAOSitios dao = new DAOSitios();
 		try 
 		{
 			//////Transacción
 			this.conn = darConexion();
 			dao.setConn(conn);
-			rents = dao.darRentabilidades();
+			rents = dao.darRentabilidades(idSitio);
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -734,7 +734,7 @@ public class FestivAndesMaster {
 				throw exception;
 			}
 		}
-		return new ListaReporteRentabilidadC5(rents);
+		return rents;
 	}
 	
 	public ListaReporteRentabilidad2C5 darRentabilidades2Local() throws SQLException {
@@ -940,7 +940,7 @@ public class FestivAndesMaster {
 		 * @throws SQLException
 		 * @throws Exception
 		 */
-		public Abonamiento registrarCompraAbonamiento(int idEspectador, int idFuncion, int idLocalidad) throws SQLException, Exception {
+		public Abonamiento registrarCompraAbonamiento(int idEspectador, int idFuncion, int idLocalidad, int idSitio) throws SQLException, Exception {
 			Abonamiento abo=null;
 			DAOUsuarios dao = new DAOUsuarios();
 			try 
@@ -953,7 +953,7 @@ public class FestivAndesMaster {
 				//Válida si se realiza con 3 semanas de anticipación
 				Date thatDay = new Date(System.currentTimeMillis() + (7 * 3 * DAY_IN_MS));
 				
-			if(fecha.after(thatDay)) abo = dao.registrarCompraAbonamiento(idEspectador, idFuncion, idLocalidad);
+			if(fecha.after(thatDay)) abo = dao.registrarCompraAbonamiento(idEspectador, idFuncion, idLocalidad, idSitio);
 			else throw new Exception("No se puede comprar el abonamiento pues tiene que ser con 3 semanas de anticipacion");
 
 			} catch (SQLException e) {
@@ -1019,7 +1019,7 @@ public class FestivAndesMaster {
 			}
 			return abo;
 		}
-//
+
 //		/**
 //		 * RFC13. CONSULTAR FUNCIONES DISPONIBLES EN FESTIVANDES
 //		 * @return
@@ -1065,39 +1065,41 @@ public class FestivAndesMaster {
 		 * @throws SQLException
 		 * @throws Exception
 		 */
-//		public ReporteRetiro consultarRentabilidad() throws SQLException, Exception {
-//			ReporteRetiro abo=null;
-//			DAOUsuarios dao = new DAOUsuarios();
-//			try 
-//			{
-//				//////Transacci�n
-//				this.conn = darConexion();
-//				dao.setConn(conn);
-////				Usuario usuario = dao.darUsuarioPorId(idUsuario);
-////				if(usuario.getRol().equals(Usuario.ADMINISTRADOR)) abo = dao.retirarCompania(idCompania);
-////				else throw new Exception("Únicamente el administrador tiene permisos de realizar esta operación.");
-//
-//			} catch (SQLException e) {
-//				System.err.println("SQLException:" + e.getMessage());
-//				e.printStackTrace();
-//				throw e;
-//			} catch (Exception e) {
-//				System.err.println("GeneralException:" + e.getMessage());
-//				e.printStackTrace();
-//				throw e;
-//			} finally {
-//				try {
-//					dao.cerrarRecursos();
-//					if(this.conn!=null)
-//						this.conn.close();
-//				} catch (SQLException exception) {
-//					System.err.println("SQLException closing resources:" + exception.getMessage());
-//					exception.printStackTrace();
-//					throw exception;
-//				}
-//			}
-//			return abo;
-//		}
+		public ArrayList<ReporteRentabilidadC5> consultarRentabilidad() throws SQLException, Exception {
+			ArrayList<ReporteRentabilidadC5> abo;
+			DAOSitios dao = new DAOSitios();
+			try 
+			{
+				//////Transacci�n
+				this.conn = darConexion();
+				dao.setConn(conn);
+//				Usuario usuario = dao.darUsuarioPorId(idUsuario);
+//				if(usuario.getRol().equals(Usuario.ADMINISTRADOR)) abo = dao.retirarCompania(idCompania);
+//				else throw new Exception("Únicamente el administrador tiene permisos de realizar esta operación.");
+          
+				//abo = dao.darRentabilidades();
+				
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return null;
+		}
 
 	
 }
