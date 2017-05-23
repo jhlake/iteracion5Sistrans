@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import tm.FestivAndesMaster;
@@ -13,7 +14,7 @@ import vos.Funcion;
 public class DAOFunciones {
 	
 	private static final String TABLA_FUNCIONES = "FUNCIONES";
-	private static final String FECHA = "FECHA";
+	private static final String FECHA = "FECHAFUNCION";
 	private static final String ID = "ID";
 	private static final String ESPECTACULO = "ESPECTACULO";
 	private static final String REALIZADA = "REALIZADA";
@@ -165,6 +166,19 @@ public class DAOFunciones {
 		return videos;
 	}
 	
+	public Date darDateFuncion(int idFuncion) throws Exception{
+		String sql = "SELECT * FROM "+FestivAndesMaster.ESQUEMA+"."+TABLA_FUNCIONES;
+		sql += " WHERE "+ID+" = "+idFuncion;
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		if(!rs.next()){
+			throw new Exception("No se encontro la funcion con el id "+idFuncion);
+		}
+		return rs.getDate(FECHA);
+	}
 	
 	
 	

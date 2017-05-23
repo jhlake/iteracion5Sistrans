@@ -1,63 +1,44 @@
 package vos;
 
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Abonamiento {
 	
-	@JsonProperty("usuario")
-	private int idUsuario;
+	@JsonProperty("idAbono")
+	private int idAbono;
 	
-	@JsonProperty("funcion")
-	private String nombreFuncion;
+	@JsonProperty("fecha")
+	private Date fecha;
 	
-	@JsonProperty("valorAbono")
-	private double valorAbono;
 	
-	//1 realizada, 0 rechazada
-	@JsonProperty("estado")
-	private int estado;
-	
-	public Abonamiento(@JsonProperty("usuario") int idUsuario,
-			@JsonProperty("funcion") String nombreFuncion,			
-			@JsonProperty("valorAbono") double valorAbono,
-			@JsonProperty("estado") int estado) 
+	public Abonamiento(@JsonProperty("idAbono") int idAbono,
+			@JsonProperty("fecha") Date fecha) 
 	{
-		this.idUsuario = idUsuario;
-		this.nombreFuncion = nombreFuncion;
-		this.valorAbono = valorAbono;
-		this.estado = estado;	
+		this.idAbono = idAbono;
+		this.fecha = fecha;
+		
 	}
 
-	public int getIdUsuario() {
-		return idUsuario;
+
+	public int getIdAbono() {
+		return idAbono;
 	}
 
-	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
+
+	public void setIdAbono(int idAbono) {
+		this.idAbono = idAbono;
 	}
 
-	public String getNombreFuncion() {
-		return nombreFuncion;
+
+	public Date getFecha() {
+		return fecha;
 	}
 
-	public void setNombreFuncion(String nombreFuncion) {
-		this.nombreFuncion = nombreFuncion;
-	}
 
-	public double getValorAbono() {
-		return valorAbono;
-	}
-
-	public void setValorAbono(double valorAbono) {
-		this.valorAbono = valorAbono;
-	}
-
-	public int getEstado() {
-		return estado;
-	}
-
-	public void setEstado(int estado) {
-		this.estado = estado;
-	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}	
 	
 }

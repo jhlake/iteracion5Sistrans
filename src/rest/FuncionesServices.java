@@ -1,5 +1,7 @@
 package rest;
 
+import java.util.Date;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -56,4 +58,21 @@ public class FuncionesServices{
 		}
 		return Response.status(200).entity(reporteFuncion).build();
 	}
+	
+	
+	//TODO pruebas
+	@GET
+	@Path("prueba")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response pruebaDarFecha(){
+		FestivAndesMaster tm = new FestivAndesMaster(getPath());
+		Date reporteFuncion;
+		try {
+			reporteFuncion = tm.darFechaFuncion(2);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(reporteFuncion).build();
+	}
+	
 }

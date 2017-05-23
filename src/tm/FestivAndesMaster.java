@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -40,20 +41,21 @@ import vos.ReporteRentabilidad2C5;
 import vos.ReporteRentabilidadC5;
 import vos.ReporteSitioC2;
 import vos.Sitio;
+import vos.Usuario;
 
 public class FestivAndesMaster {
 	
 
-	public static final String ESQUEMA = "ISIS2304B021710";
+	public static final String ESQUEMA = "ISIS2304B071710";
 	
 	/**
-	 * Atributo est醫ico que contiene el path relativo del archivo que tiene los datos de la conexi髇
+	 * Atributo est谩tico que contiene el path relativo del archivo que tiene los datos de la conexi贸n
 	 */
 	public static final String CONNECTION_DATA_FILE_NAME_REMOTE = "/conexion.properties";
 	
 
 	/**
-	 * Atributo est醫ico que contiene el path absoluto del archivo que tiene los datos de la conexi髇
+	 * Atributo est谩tico que contiene el path absoluto del archivo que tiene los datos de la conexi贸n
 	 */
 	private  String connectionDataPath;
 
@@ -78,7 +80,7 @@ public class FestivAndesMaster {
 	private String driver;
 	
 	/**
-	 * Conexi髇 a la base de datos
+	 * Conexi贸n a la base de datos
 	 */
 	private Connection conn;
 	
@@ -86,10 +88,10 @@ public class FestivAndesMaster {
 
 
 	/**
-	 * M閠odo constructor de la clase VideoAndesMaster, esta clase modela y contiene cada una de las 
+	 * M茅todo constructor de la clase VideoAndesMaster, esta clase modela y contiene cada una de las 
 	 * transacciones y la logia de negocios que estas conllevan.
-	 * <b>post: </b> Se crea el objeto VideoAndesMaster, se inicializa el path absoluto de el archivo de conexi髇 y se
-	 * inicializa los atributos que se usan par la conexi髇 a la base de datos.
+	 * <b>post: </b> Se crea el objeto VideoAndesMaster, se inicializa el path absoluto de el archivo de conexi贸n y se
+	 * inicializa los atributos que se usan par la conexi贸n a la base de datos.
 	 * @param contextPathP - path absoluto en el servidor del contexto del deploy actual
 	 */
 	public FestivAndesMaster(String contextPathP) {
@@ -101,8 +103,8 @@ public class FestivAndesMaster {
 	}
 
 	/*
-	 * M閠odo que  inicializa los atributos que se usan para la conexion a la base de datos.
-	 * <b>post: </b> Se han inicializado los atributos que se usan par la conexi髇 a la base de datos.
+	 * M茅todo que  inicializa los atributos que se usan para la conexion a la base de datos.
+	 * <b>post: </b> Se han inicializado los atributos que se usan par la conexi贸n a la base de datos.
 	 */
 	private void initConnectionData() {
 		try {
@@ -122,9 +124,9 @@ public class FestivAndesMaster {
 	}
 
 	/**
-	 * M閠odo que  retorna la conexi髇 a la base de datos
-	 * @return Connection - la conexi髇 a la base de datos
-	 * @throws SQLException - Cualquier error que se genere durante la conexi髇 a la base de datos
+	 * M茅todo que  retorna la conexi贸n a la base de datos
+	 * @return Connection - la conexi贸n a la base de datos
+	 * @throws SQLException - Cualquier error que se genere durante la conexi贸n a la base de datos
 	 */
 	private Connection darConexion() throws SQLException {
 		System.out.println("Connecting to: " + url + " With user: " + user);
@@ -642,7 +644,7 @@ public class FestivAndesMaster {
 		DAOCompaniasDeTeatro daoCompanias = new DAOCompaniasDeTeatro();
 		try 
 		{
-			//////Transacci贸n
+			//////Transacci脙鲁n
 			this.conn = darConexion();
 			daoCompanias.setConn(conn);
 			daoCompanias.agregarCompaniaDeTeatro(compania);
@@ -676,7 +678,7 @@ public class FestivAndesMaster {
 		DAOFunciones daoVideos = new DAOFunciones();
 		try 
 		{
-			//////Transacci髇
+			//////Transacci贸n
 			this.conn = darConexion();
 			daoVideos.setConn(conn);
 			videos = daoVideos.darFunciones();
@@ -708,7 +710,7 @@ public class FestivAndesMaster {
 		DAOSitios dao = new DAOSitios();
 		try 
 		{
-			//////Transacci髇
+			//////Transacci贸n
 			this.conn = darConexion();
 			dao.setConn(conn);
 			rents = dao.darRentabilidades();
@@ -740,7 +742,7 @@ public class FestivAndesMaster {
 		DAOEspectaculos dao = new DAOEspectaculos();
 		try 
 		{
-			//////Transacci髇
+			//////Transacci贸n
 			this.conn = darConexion();
 			dao.setConn(conn);
 			rents = dao.darRentabilidades();
@@ -772,7 +774,7 @@ public class FestivAndesMaster {
 		DAOCompaniasDeTeatro dao = new DAOCompaniasDeTeatro();
 		try 
 		{
-			//////Transacci髇
+			//////Transacci贸n
 			this.conn = darConexion();
 			dao.setConn(conn);
 			com = dao.eliminarCompania();
@@ -805,7 +807,7 @@ public class FestivAndesMaster {
 		DAOFunciones dao = new DAOFunciones();
 		try 
 		{
-			//////Transacci髇
+			//////Transacci贸n
 			this.conn = darConexion();
 			dao.setConn(conn);
 			fun = dao.darFunciones();
@@ -837,7 +839,7 @@ public class FestivAndesMaster {
 		DAOUsuarios dao = new DAOUsuarios();
 		try 
 		{
-			//////Transacci髇
+			//////Transacci贸n
 			this.conn = darConexion();
 			dao.setConn(conn);
 			abo = dao.darAbonamientos();
@@ -863,7 +865,239 @@ public class FestivAndesMaster {
 		}
 		return new ListaAbonamientos(abo);
 	}
+
+	public ArrayList<Usuario> darUsuarios() throws SQLException {
+		ArrayList<Usuario> abo;
+		DAOUsuarios dao = new DAOUsuarios();
+		try 
+		{
+			//////Transacci贸n
+			this.conn = darConexion();
+			dao.setConn(conn);
+			abo = dao.darUsuarios();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return abo;
+	}
 	
+	
+	//TODO
+	//----------------------------------
+	
+		public Date darFechaFuncion(int idFuncion) throws SQLException, Exception {
+			Date resp;
+			DAOFunciones dao = new DAOFunciones();
+			try 
+			{
+				//////Transacci锟絥
+				this.conn = darConexion();
+				dao.setConn(conn);
+				resp = dao.darDateFuncion(idFuncion);
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return resp;
+		}
+		
+		/**
+		 * RF15. REGISTRAR COMPRA DE UN ABONAMIENTO
+		 * @return
+		 * @throws SQLException
+		 * @throws Exception
+		 */
+		public Abonamiento registrarCompraAbonamiento(int idEspectador, int idFuncion, int idLocalidad) throws SQLException, Exception {
+			Abonamiento abo=null;
+			DAOUsuarios dao = new DAOUsuarios();
+			try 
+			{
+				//////Transacci锟絥
+				this.conn = darConexion();
+				dao.setConn(conn);
+				Date fecha = darFechaFuncion(idFuncion);
+				long DAY_IN_MS = 1000 * 60 * 60 * 24;
+				//V谩lida si se realiza con 3 semanas de anticipaci贸n
+				Date thatDay = new Date(System.currentTimeMillis() + (7 * 3 * DAY_IN_MS));
+				
+			if(fecha.after(thatDay)) abo = dao.registrarCompraAbonamiento(idEspectador, idFuncion, idLocalidad);
+			else throw new Exception("No se puede comprar el abonamiento pues tiene que ser con 3 semanas de anticipacion");
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return abo;
+		}
+		
+		
+		
+		/**
+		 * RF16. RETIRAR COMPA脩IA
+		 * @return
+		 * @throws SQLException
+		 * @throws Exception
+		 */
+		public CompaniaDeTeatro retirarCompania(int idUsuario, int idCompania) throws SQLException, Exception {
+			CompaniaDeTeatro abo=null;
+			DAOUsuarios dao = new DAOUsuarios();
+			try 
+			{
+				//////Transacci锟絥
+				this.conn = darConexion();
+				dao.setConn(conn);
+				//Usuario usuario = dao.darUsuarioPorId(idUsuario);
+				//if(usuario.getRol().equals(Usuario.ADMINISTRADOR)) abo = dao.retirarCompania(idCompania);
+				//else throw new Exception("脷nicamente el administrador tiene permisos de realizar esta operaci贸n.");
+
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return abo;
+		}
+//
+//		/**
+//		 * RFC13. CONSULTAR FUNCIONES DISPONIBLES EN FESTIVANDES
+//		 * @return
+//		 * @throws SQLException
+//		 * @throws Exception
+//		 */
+//		public ReporteRetiro consultarFuncionesDisponibles() throws SQLException, Exception {
+//			ReporteRetiro abo=null;
+//			DAOUsuarios dao = new DAOUsuarios();
+//			try 
+//			{
+//				//////Transacci锟絥
+//				this.conn = darConexion();
+//				dao.setConn(conn);
+////				Usuario usuario = dao.darUsuarioPorId(idUsuario);
+////				if(usuario.getRol().equals(Usuario.ADMINISTRADOR)) abo = dao.retirarCompania(idCompania);
+////				else throw new Exception("脷nicamente el administrador tiene permisos de realizar esta operaci贸n.");
+//
+//			} catch (SQLException e) {
+//				System.err.println("SQLException:" + e.getMessage());
+//				e.printStackTrace();
+//				throw e;
+//			} catch (Exception e) {
+//				System.err.println("GeneralException:" + e.getMessage());
+//				e.printStackTrace();
+//				throw e;
+//			} finally {
+//				try {
+//					dao.cerrarRecursos();
+//					if(this.conn!=null)
+//						this.conn.close();
+//				} catch (SQLException exception) {
+//					System.err.println("SQLException closing resources:" + exception.getMessage());
+//					exception.printStackTrace();
+//					throw exception;
+//				}
+//			}
+//			return abo;
+//		}
+		/**
+		 * RFC14. CONSULTAR LA RENTABILIDAD DE LAS COMPANIAS
+		 * @return
+		 * @throws SQLException
+		 * @throws Exception
+		 */
+//		public ReporteRetiro consultarRentabilidad() throws SQLException, Exception {
+//			ReporteRetiro abo=null;
+//			DAOUsuarios dao = new DAOUsuarios();
+//			try 
+//			{
+//				//////Transacci锟絥
+//				this.conn = darConexion();
+//				dao.setConn(conn);
+////				Usuario usuario = dao.darUsuarioPorId(idUsuario);
+////				if(usuario.getRol().equals(Usuario.ADMINISTRADOR)) abo = dao.retirarCompania(idCompania);
+////				else throw new Exception("脷nicamente el administrador tiene permisos de realizar esta operaci贸n.");
+//
+//			} catch (SQLException e) {
+//				System.err.println("SQLException:" + e.getMessage());
+//				e.printStackTrace();
+//				throw e;
+//			} catch (Exception e) {
+//				System.err.println("GeneralException:" + e.getMessage());
+//				e.printStackTrace();
+//				throw e;
+//			} finally {
+//				try {
+//					dao.cerrarRecursos();
+//					if(this.conn!=null)
+//						this.conn.close();
+//				} catch (SQLException exception) {
+//					System.err.println("SQLException closing resources:" + exception.getMessage());
+//					exception.printStackTrace();
+//					throw exception;
+//				}
+//			}
+//			return abo;
+//		}
 
 	
 }

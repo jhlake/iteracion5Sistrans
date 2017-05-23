@@ -72,25 +72,18 @@ public class FestivAndesDistributed
 		factory = (RMQConnectionFactory) ctx.lookup(MQ_CONNECTION_NAME);
 		allRentabilidadMQ = new AllRentabilidadMDB(factory, ctx);
 		
-		allFuncionesMQ = new AllFuncionesMDB(factory, ctx);
-		allAbonamientosMQ = new AllAbonamientosMDB(factory, ctx);
-		allRetirarCompaniaMQ = new AllRetirarCompaniaMDB(factory, ctx);
+		
 		
 		allRentabilidadMQ.start();
 		
-		allFuncionesMQ.start();
-		allAbonamientosMQ.start();
-		allRetirarCompaniaMQ.start();
-		
+	
 	}
 	
 	public void stop() throws JMSException
 	{
 		allRentabilidadMQ.close();
 		
-		allFuncionesMQ.close();
-		allAbonamientosMQ.close();
-		allRetirarCompaniaMQ.close();
+
 	}
 	
 	/**
