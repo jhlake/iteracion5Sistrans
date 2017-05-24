@@ -16,9 +16,9 @@ public class DAOFunciones {
 	private static final String TABLA_FUNCIONES = "FUNCIONES";
 	private static final String FECHA = "FECHAFUNCION";
 	private static final String ID = "ID";
-	private static final String ESPECTACULO = "ESPECTACULO";
+	private static final String ESPECTACULO = "IDESPECTACULO";
 	private static final String REALIZADA = "REALIZADA";
-	private static final String SITIO = "SITIO";
+	private static final String SITIO = "IDSITIO";
 	
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
@@ -146,7 +146,7 @@ public class DAOFunciones {
 	public ArrayList<Funcion> darFunciones() throws SQLException, Exception {
 		ArrayList<Funcion> videos = new ArrayList<Funcion>();
 
-		String sql = "SELECT * FROM ESQUEMA.FUNCIONES";
+		String sql = "SELECT * FROM "+ FestivAndesMaster.ESQUEMA+".FUNCIONES";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -155,7 +155,7 @@ public class DAOFunciones {
 		while (rs.next()) {
 			String fecha = rs.getString("fechaFuncion");
 			int id = Integer.parseInt(rs.getString("id"));
-			int realizado = Integer.parseInt(rs.getString("realizada"));
+			int realizado = Integer.parseInt(rs.getString("realizado"));
 			boolean realizada = false;
 			if(realizado==1){
 				realizada = true;

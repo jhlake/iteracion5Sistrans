@@ -95,19 +95,19 @@ public class AbonoServices {
 			prop.load(in);
 			in.close();
 			String myQueue = prop.getProperty("myQueue");
-			String topicAllRentabilidad = prop.getProperty("topicAllRentabilidad");	
-			String topicAllRentabilidad2 = prop.getProperty("topicAllRentabilidad2");
-			String topicAllFunciones = prop.getProperty("topicAllFunciones");
+//			String topicAllRentabilidad = prop.getProperty("topicAllRentabilidad");	
+//			String topicAllRentabilidad2 = prop.getProperty("topicAllRentabilidad2");
+//			String topicAllFunciones = prop.getProperty("topicAllFunciones");
 			String topicAllAbonamientos = prop.getProperty("topicAllAbonamientos");
-			String topicAllRetirarCompania = prop.getProperty("topicAllRetirarCompania");
-			
+//			String topicAllRetirarCompania = prop.getProperty("topicAllRetirarCompania");
+//			
 			int numberApps = Integer.parseInt(prop.getProperty("numberApps"));
 			
-			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad);	
-			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad2);
-			manager.setUpJMSManager(numberApps, myQueue, topicAllFunciones);
+//			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad);	
+//			manager.setUpJMSManager(numberApps, myQueue, topicAllRentabilidad2);
+//			manager.setUpJMSManager(numberApps, myQueue, topicAllFunciones);
 			manager.setUpJMSManager(numberApps, myQueue, topicAllAbonamientos);
-			manager.setUpJMSManager(numberApps, myQueue, topicAllRetirarCompania);	
+//			manager.setUpJMSManager(numberApps, myQueue, topicAllRetirarCompania);	
 			
 			
 		} catch (Exception e) {

@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletContext;
@@ -14,7 +15,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.FestivAndesMaster;
+import vos.Funcion;
+import vos.ListaFunciones;
 import vos.ReporteFuncion;
+import vos.Usuario;
 
 @Path("funciones")
 public class FuncionesServices{
@@ -75,4 +79,23 @@ public class FuncionesServices{
 		return Response.status(200).entity(reporteFuncion).build();
 	}
 	
+	
+	/**
+	 * Método que expone servicio REST usando GET que da todos los objetos de la base de datos.
+	 * <b>URL: </b> http://"ip o nombre de host":8080/FestivAndes/rest/usuarios
+	 * @return Json con todos los objetos de la base de datos O json con 
+     * el error que se produjo
+	 */
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getFunciones() {
+		FestivAndesMaster tm = new FestivAndesMaster(getPath());
+		ListaFunciones lista;
+		try {
+			lista = tm.darFuncionesLocal();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(lista).build();
+	}
 }
